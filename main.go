@@ -8,24 +8,101 @@
 package main
 
 import (
-	"github.com/AntonyIS/Golang-microservice-1/database"
-	"github.com/AntonyIS/Golang-microservice-1/handlers"
+	"fmt"
+	"net/http"
+	"os"
+
 	"github.com/gin-gonic/gin"
+	"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/postgres"
+	"github.com/joho/godotenv"
 )
 
-// Item slice
-var items = []database.Item{
-	{ID: "1", Name: "Nike Sneekers", Description: "Latest Nike sneekers", Price: 12.43},
-	{ID: "2", Name: "Vitron HD 22 TV", Description: "This LED TV is slimmer and incorporates great aesthetic design‎‎.‎‎", Price: 112.43},
-	{ID: "3", Name: "XIAOMI Redmi Note 8,", Description: "The device is equipped with sensors such as Fingerprint (rear-mounted), accelerometer, gyro, proximity, and compass.", Price: 12.43},
+var db *gorm.DB
+
+var err error
+
+// Item Structure
+type Item struct {
+	gorm.Model
+	Name        string  `json:"name"`
+	Description string  `json:"description"`
+	Price       float64 `json:"price"`
+}
+
+func GetItems(c *gin.Context) {
+	// Pulls all items from the database and returns them back to the client
+	var items []Item
+	db.Find(&items)
+	c.IndentedJSON(http.StatusOK, items)
+}
+
+func GetItem(c *gin.Context) {
+	var item Item
+	// Get Item ID from the request
+	id := c.Param("id")
+	// Get Item with the request id from the database
+	db.First(&item, id)
+	// Return found item to client
+	c.IndentedJSON(http.StatusOK, item)
+}
+
+func PostItem(c *gin.Context) {
+	// Gets post data and stores the data into the database table
+	var newItem Item
+	// Bind request data to newItem
+	if err := c.BindJSON(&newItem); err != nil {
+		return
+	}
+	db.Create(&newItem)
+	c.IndentedJSON(http.StatusOK, newItem)
+
+}
+func setup() {
+	godotenv.Load(".env")
+	var (
+		dialect  = os.Getenv("DIALECT")
+		host     = os.Getenv("HOST")
+		port     = os.Getenv("PORT")
+		user     = os.Getenv("USER")
+		dbname   = os.Getenv("DBNAME")
+		password = os.Getenv("PASSWORD")
+	)
+
+	// Connection string to the data
+	conn := fmt.Sprintf("host=%s port=%s user=%s dbname=%s sslmode=disable password=%s", host, port, user, dbname, password)
+
+	// // Execute database connection
+	db, err = gorm.Open(dialect, conn)
+
+	// // Check if connection to database has error or issues
+	if err != nil {
+		fmt.Println(err)
+		panic("Failed to connect to the database")
+	}
+
+	// // Create a Items table in the database if it does exists
+	db.AutoMigrate(&Item{})
+	// // Setup database connection
 }
 
 // Code execution starts in the main function
 func main() {
+
+	setup()
+	defer db.Close()
+
 	// Call the gin routing feature
 	r := gin.Default()
-	// Define a route to return all items
-	r.GET("/items", handlers.GetItems)
+	// Define routes to return all items
+	r.GET("/items", GetItems)
+
+	// Define route to return items with id
+	r.GET("/items/:id", GetItem)
+
+	// Define route to post items
+	r.POST("/items", PostItem)
+
 	// Attach the server to route request
 	r.Run("127.0.0.1:5000")
 
