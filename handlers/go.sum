@@ -1,5 +1,3 @@
-github.com/AntonyIS/Golang-microservice-1/database v0.0.0-20211006091456-2af88852a6c2 h1:VGaEa7sCSbj1yJ9oD9v9iOf1cGHM2emJbxLGQoUQSEQ=
-github.com/AntonyIS/Golang-microservice-1/database v0.0.0-20211006091456-2af88852a6c2/go.mod h1:thR3W3eist1EIGb7g7Xb5kkembU6DauEtcOyKO5RgdA=
 github.com/PuerkitoBio/goquery v1.5.1/go.mod h1:GsLWisAFVj4WgDibEWF4pvYnkVQBpKBKeU+7zCJoLcc=
 github.com/andybalholm/cascadia v1.1.0/go.mod h1:GsXiBklL0woXo1j/WYWtSYYC4ouU9PqHO0sqidkEA4Y=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=

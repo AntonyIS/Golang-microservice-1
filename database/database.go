@@ -32,9 +32,14 @@ type Item struct {
 	Price       float64 `json:"price"`
 }
 
+type ItemInterface interface {
+	GetItems() []Item
+	GetItem() Item
+}
+
 func Setup() {
 	// Connection string to the data
-	conn := fmt.Sprintf("host=%s port=%s user=%s dbname=%s sslmode=disable password=%s", host, port, user, dbname)
+	conn := fmt.Sprintf("host=%s port=%s user=%s dbname=%s sslmode=disable password=%s", host, port, user, dbname, password)
 
 	// Execute database connection
 	db, err = gorm.Open(dialect, conn)
