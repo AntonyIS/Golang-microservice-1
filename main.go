@@ -10,19 +10,12 @@ package main
 import (
 	"net/http"
 
+	"github.com/AntonyIS/Golang-microservice-1/database"
 	"github.com/gin-gonic/gin"
 )
 
-// Item Structure
-type Item struct {
-	ID          string  `json:"id"`
-	Name        string  `json:"name"`
-	Description string  `json:"description"`
-	Price       float64 `json:"price"`
-}
-
 // Item slice
-var items = []Item{
+var items = []database.Item{
 	{ID: "1", Name: "Nike Sneekers", Description: "Latest Nike sneekers", Price: 12.43},
 	{ID: "2", Name: "Vitron HD 22 TV", Description: "This LED TV is slimmer and incorporates great aesthetic design‎‎.‎‎", Price: 112.43},
 	{ID: "3", Name: "XIAOMI Redmi Note 8,", Description: "The device is equipped with sensors such as Fingerprint (rear-mounted), accelerometer, gyro, proximity, and compass.", Price: 12.43},
