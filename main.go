@@ -14,8 +14,9 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
-	_ "github.com/jinzhu/gorm/dialects/postgres"
 	"github.com/joho/godotenv"
+
+	_ "github.com/jinzhu/gorm/dialects/postgres"
 )
 
 var db *gorm.DB
@@ -62,11 +63,11 @@ func setup() {
 	godotenv.Load(".env")
 	var (
 		dialect  = os.Getenv("DIALECT")
-		host     = os.Getenv("HOST")
-		port     = os.Getenv("PORT")
-		user     = os.Getenv("USER")
-		dbname   = os.Getenv("DBNAME")
-		password = os.Getenv("PASSWORD")
+		host     = os.Getenv("DB_HOST")
+		port     = os.Getenv("DB_PORT")
+		user     = os.Getenv("DB_USER")
+		dbname   = os.Getenv("DB_NAME")
+		password = os.Getenv("DB_PASSWORD")
 	)
 
 	// Connection string to the data
