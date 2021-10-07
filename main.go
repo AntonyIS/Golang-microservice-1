@@ -12,6 +12,7 @@ import (
 	"net/http"
 
 	"os"
+
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
 	"github.com/joho/godotenv"
@@ -31,6 +32,20 @@ type Item struct {
 	Price       float64 `json:"price"`
 }
 
+// ###################### CRUD Handlers ###############################
+// CREATE
+func PostItem(c *gin.Context) {
+	// Gets post data and stores the data into the database table
+	var newItem Item
+	// Bind request data to newItem
+	if err := c.BindJSON(&newItem); err != nil {
+		return
+	}
+	db.Create(&newItem)
+	c.IndentedJSON(http.StatusOK, newItem)
+}
+
+// READ
 func GetItems(c *gin.Context) {
 	// Pulls all items from the database and returns them back to the client
 	var items []Item
@@ -44,24 +59,77 @@ func GetItem(c *gin.Context) {
 	id := c.Param("id")
 	// Get Item with the request id from the database
 	db.First(&item, id)
+
+	// Check if item.Name, item.Description and item.Price is "" empty strigns
+	if item.Name == "" && item.Description == "" && item.Price == 0 {
+		c.IndentedJSON(http.StatusNotFound, gin.H{
+			"message": "No item found",
+		})
+		return
+	}
 	// Return found item to client
 	c.IndentedJSON(http.StatusOK, item)
 }
 
-func PostItem(c *gin.Context) {
-	// Gets post data and stores the data into the database table
-	var newItem Item
-	// Bind request data to newItem
-	if err := c.BindJSON(&newItem); err != nil {
+// UPDATE
+func UpdateItem(c *gin.Context) {
+	var item Item
+	// Get Item ID from the request
+	id := c.Param("id")
+	// Item from db
+	db.First(&item, id)
+	// Check if item.Name, item.Description and item.Price is "" empty strigns
+	if item.Name == "" && item.Description == "" && item.Price == 0 {
+		c.IndentedJSON(http.StatusNotFound, gin.H{
+			"message": "No item found",
+		})
 		return
 	}
-	db.Create(&newItem)
-	c.IndentedJSON(http.StatusOK, newItem)
+
+	// Item from request body
+	var updateItem Item
+	// Bind request data to updateItem
+	if err := c.BindJSON(&updateItem); err != nil {
+		return
+	}
+	// Update item from db
+	item.Name = updateItem.Name
+	item.Description = updateItem.Description
+	item.Price = updateItem.Price
+
+	db.Save(&item)
+
+	c.IndentedJSON(http.StatusOK, item)
 
 }
+
+// DELETE
+func DeleteItem(c *gin.Context) {
+	var item Item
+	var items []Item
+	// Get Item ID from the request
+	id := c.Param("id")
+	db.First(&item, id)
+	// Check if item.Name, item.Description and item.Price is "" empty strigns
+	if item.Name == "" && item.Description == "" && item.Price == 0 {
+		c.IndentedJSON(http.StatusNotFound, gin.H{
+			"message": "No item found",
+		})
+		return
+	}
+	// Item from db
+	db.Delete(&item, id)
+
+	// return remaining items in db
+	db.Find(&items)
+
+	c.IndentedJSON(http.StatusOK, items)
+}
+
 func setup() {
 	godotenv.Load(".env")
 	var (
+		dialect  = os.Getenv("DIALECT")
 		host     = os.Getenv("DB_HOST")
 		port     = os.Getenv("DB_PORT")
 		user     = os.Getenv("DB_USER")
@@ -69,12 +137,11 @@ func setup() {
 		password = os.Getenv("DB_PASSWORD")
 	)
 
-	
 	// Connection string to the data
 	conn := fmt.Sprintf("host=%s port=%s user=%s dbname=%s sslmode=disable password=%s", host, port, user, dbname, password)
 
 	// // Execute database connection
-	db, err = gorm.Open("postgres", conn)
+	db, err = gorm.Open(dialect, conn)
 
 	// // Check if connection to database has error or issues
 	if err != nil {
@@ -104,7 +171,13 @@ func main() {
 	// Define route to post items
 	r.POST("/items", PostItem)
 
-	// Attach the server to route request
+	// Define route to update items
+	r.PUT("/items/:id", UpdateItem)
+
+	// Define route to update items
+	r.DELETE("/items/:id", DeleteItem)
+
+	// Run the server
 	r.Run(":5000")
 
 }
