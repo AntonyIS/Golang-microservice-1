@@ -20,7 +20,7 @@ function ItemCards (){
     }, [])
     return (
         <div className="container mt-5 p-3">
-            <div className="row">
+            <div className="row mb-0">
                 {
                     items.map((item) => (
                         <div className="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
