@@ -10,8 +10,8 @@ package main
 import (
 	"fmt"
 	"net/http"
-	"os"
 
+	"os"
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
 	"github.com/joho/godotenv"
@@ -62,7 +62,6 @@ func PostItem(c *gin.Context) {
 func setup() {
 	godotenv.Load(".env")
 	var (
-		dialect  = os.Getenv("DIALECT")
 		host     = os.Getenv("DB_HOST")
 		port     = os.Getenv("DB_PORT")
 		user     = os.Getenv("DB_USER")
@@ -70,11 +69,12 @@ func setup() {
 		password = os.Getenv("DB_PASSWORD")
 	)
 
+	
 	// Connection string to the data
 	conn := fmt.Sprintf("host=%s port=%s user=%s dbname=%s sslmode=disable password=%s", host, port, user, dbname, password)
 
 	// // Execute database connection
-	db, err = gorm.Open(dialect, conn)
+	db, err = gorm.Open("postgres", conn)
 
 	// // Check if connection to database has error or issues
 	if err != nil {
@@ -105,6 +105,6 @@ func main() {
 	r.POST("/items", PostItem)
 
 	// Attach the server to route request
-	r.Run("127.0.0.1:5000")
+	r.Run(":5000")
 
 }

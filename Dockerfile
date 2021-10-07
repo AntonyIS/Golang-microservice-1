@@ -27,6 +27,8 @@ WORKDIR /
 
 COPY --from=build /golang-microservice-1 /golang-microservice-1
 
+COPY --from=build /api/.env . 
+
 EXPOSE 5000
 
 USER nonroot:nonroot
