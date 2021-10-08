@@ -7,7 +7,7 @@ function ItemCards (){
 
     const apiRequest = () => {
          // Simple GET request using fetch
-        fetch('http://127.0.0.1:5000/items')
+        fetch('http://localhost:80/items')
         .then(response => response.json())
             .then(data => 
                 setItems(data)
@@ -18,8 +18,10 @@ function ItemCards (){
     useEffect(() =>{
         apiRequest()
     }, [])
+
+    console.log(items)
     return (
-        <div className="container mt-5 p-3">
+        <div className="container mt-3 mb-1 p-3">
             <div className="row mb-0">
                 {
                     items.map((item) => (
