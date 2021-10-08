@@ -15,9 +15,7 @@ services:
             - postgresql-db
         deploy:
             replicas: 5
-        # networks:
-        #     - golang-microservice-1-network
-
+        
     client:
         container_name: client
         stdin_open: true
@@ -67,8 +65,7 @@ services:
         volumes:
             - database_postgres:/var/lib/postgresql/data
 
-        # networks:
-        #     - golang-microservice-1-network
+       
       
 volumes:
     api:

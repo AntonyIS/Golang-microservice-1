@@ -1,3 +1,5 @@
+import {Link} from "react-router-dom"
+
 function  ItemCard (props) {
     return (
        <>
@@ -12,8 +14,7 @@ function  ItemCard (props) {
                        <br />
                        Ksh. <span className="text text-danger">{props.data.price}</span>
                    </p>
-                   
-                   <a href="/" className="btn btn-primary">View</a>
+                   <Link className="btn btn-primary" to ={`items/${props.data.ID}`}>View</Link>
                </div>
            </div>
        </>

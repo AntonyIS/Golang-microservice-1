@@ -1,13 +1,27 @@
 import Navbar from "./components/Navbar"
 import ItemCards from "./components/ItemCards"
-// import { BrowserRouter as Router,Switch,Route,Link} from "react-router-dom";
+import ItemDetails from "./components/ItemDetails"
+import AddItem from "./components/AddItem"
+
+
+import { BrowserRouter as Router,Switch,Route} from "react-router-dom";
 function App() {
   
   return (
-    <div className="App">
-      <Navbar />
-      <ItemCards />
+    <Router>
+      <div className="App">
+        <Navbar />
+        <Switch>
+          <Route path="/" exact component={ItemCards} />
+          <Route path="/items/:id" exact component={ItemDetails} />
+          <Route path="/items/add/new" exact component={AddItem} />
+        </Switch>
+        
+
+       
     </div>
+    </Router>
+    
   );
 }
 
