@@ -1,8 +1,10 @@
 import React, {useState, useEffect} from "react";
-import {Link} from "react-router-dom"
+import {Link, useHistory} from "react-router-dom"
+
 
 function ItemDetails ({match}) {
     const itemID = match.params.id
+    let history = useHistory();
     useEffect(() =>{
         apiRequest()
     }, [])
@@ -16,6 +18,14 @@ function ItemDetails ({match}) {
             .then(data => 
                 setItem(data)
         );
+    }
+
+    const deleteHandle = () => {
+        fetch(`http://localhost:8080/items/delete/${itemID}`, { method: 'DELETE' })
+        .then(() => {
+            history.push('/');
+        });
+        
     }
    
     const imgStyle = {
@@ -41,7 +51,7 @@ function ItemDetails ({match}) {
                         <div>
                             <Link to="/" className="btn btn-info btn-md m-1">Go back home </Link>
                             <Link to="/items/update" className="btn btn-success btn-md m-1">Update </Link>
-                            <Link to="/items/delete" className="btn btn-danger btn-md m-1">Delete </Link>
+                            <button onClick={deleteHandle} className="btn btn-danger btn-md m-1">Delete </button>
                         </div>
                     </div>
                 </div>

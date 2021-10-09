@@ -1,8 +1,9 @@
-// import {Link} from "react-router-dom"
+import {useHistory} from "react-router-dom"
 import {useState, useEffect} from "react"
 
 function  AddItem () {
     const [item, setItem] = useState({})
+    let history = useHistory();
     const handleChange = (event) =>{
         
         var name = event.target.name;
@@ -30,7 +31,8 @@ function  AddItem () {
         fetch('http://localhost:8080/items/post', requestOptions)
         .then(response => response.json())
         .then(data => 
-            console.log(data)
+                history.push(`/items/${data.ID}`)
+           
         );
     }
    
