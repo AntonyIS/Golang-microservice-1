@@ -7,7 +7,7 @@ function ItemCards (){
 
     const apiRequest = () => {
          // Simple GET request using fetch API
-        fetch('http://localhost:80/items')
+        fetch('http://localhost:8080/items')
         .then(response => response.json())
             .then(data => 
                 setItems(data)
@@ -23,9 +23,9 @@ function ItemCards (){
         <div className="container mt-3 mb-1 p-3">
             <div className="row mb-0">
                 {
-                    items.map((item) => (
+                    items.map((item, index) => (
                         <div className="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
-                            <ItemCard data={item} key={item.id} />
+                            <ItemCard data={item} key={index} />
                         </div>
                         )
                     )

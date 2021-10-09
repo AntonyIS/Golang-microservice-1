@@ -10,7 +10,6 @@ package main
 import (
 	"fmt"
 	"net/http"
-	"time"
 
 	"os"
 
@@ -38,12 +37,15 @@ type Item struct {
 // ###################### CRUD Handlers ###############################
 // CREATE
 func PostItem(c *gin.Context) {
+
 	// Gets post data and stores the data into the database table
 	var newItem Item
 	// Bind request data to newItem
 	if err := c.BindJSON(&newItem); err != nil {
+		fmt.Println(err)
 		return
 	}
+
 	db.Create(&newItem)
 	c.IndentedJSON(http.StatusOK, newItem)
 }
@@ -115,7 +117,7 @@ func DeleteItem(c *gin.Context) {
 	id := c.Param("id")
 	db.First(&item, id)
 	// Check if item.Name, item.Description and item.Price is "" empty strigns
-	if item.Name == "" && item.Description == "" && item.Price == 0 {
+	if item.Name == "" && item.Description == "" && item.Price == 0 && item.ID == 0 {
 		c.IndentedJSON(http.StatusNotFound, gin.H{
 			"message": "No item found",
 		})
@@ -167,14 +169,7 @@ func main() {
 	// Call the gin routing feature
 	r := gin.Default()
 
-	r.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"http://localhost:3000"},
-		AllowMethods:     []string{"PUT", "PUT", "POST", "DELETE"},
-		AllowHeaders:     []string{"Origin"},
-		ExposeHeaders:    []string{"Content-Length"},
-		AllowCredentials: true,
-		MaxAge:           12 * time.Hour,
-	}))
+	r.Use(cors.Default())
 
 	// Define routes to return all items
 	r.GET("/items", GetItems)
@@ -183,13 +178,13 @@ func main() {
 	r.GET("/items/:id", GetItem)
 
 	// Define route to post items
-	r.POST("/items", PostItem)
+	r.POST("/items/post", PostItem)
 
 	// Define route to update items
-	r.PUT("/items/:id", UpdateItem)
+	r.PUT("/items/update/:id", UpdateItem)
 
 	// Define route to update items
-	r.DELETE("/items/:id", DeleteItem)
+	r.DELETE("/items/delete/:id", DeleteItem)
 
 	// Run the server
 	r.Run(":5000")

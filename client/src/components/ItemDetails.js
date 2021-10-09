@@ -11,7 +11,7 @@ function ItemDetails ({match}) {
 
     const apiRequest = () => {
          // Simple GET request using fetch API
-        fetch(`http://localhost:80/items/${itemID}`)
+        fetch(`http://localhost:8080/items/${itemID}`)
         .then(response => response.json())
             .then(data => 
                 setItem(data)
