@@ -22,7 +22,7 @@ func PostItem(c *gin.Context) {
 		return
 	}
 
-	db.Create(&newItem)
+	models.DB.Create(&newItem)
 	c.IndentedJSON(http.StatusOK, newItem)
 }
 
