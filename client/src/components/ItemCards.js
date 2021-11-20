@@ -24,7 +24,7 @@ function ItemCards (){
             <div className="row mb-0">
                 {
                     items.map((item, index) => (
-                        <div className="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                        <div className="col-xs-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
                             <ItemCard data={item} key={index} />
                         </div>
                         )
