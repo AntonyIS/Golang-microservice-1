@@ -43,7 +43,7 @@ func Setup() {
 		panic("Failed to connect to the database")
 	}
 
-	// // Create a Items table in the database if it does exists
+	// Create a Items table in the database if it does exists
 	DB.AutoMigrate(&Item{})
 	// // Setup database connection
 }

@@ -17,10 +17,12 @@ import (
 // Code execution starts in the main function
 func main() {
 
+	// Initialize the database and database models
 	models.Setup()
-
+	// Close the databse after initiliazing it
 	defer models.DB.Close()
 
+	// Initilize the api endpoints
 	handlers.GetHandlers()
 
 }

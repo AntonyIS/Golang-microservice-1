@@ -25,7 +25,7 @@ func GetHandlers() {
 	// Define route to update items
 	r.PUT("/items/update/:id", repository.UpdateItem)
 
-	// Define route to update items
+	// Define route to delete items
 	r.DELETE("/items/delete/:id", repository.DeleteItem)
 
 	// Run the server

@@ -79,7 +79,7 @@ func UpdateItem(c *gin.Context) {
 	item.Price = updateItem.Price
 	item.ImageURL = updateItem.ImageURL
 
-	db.Save(&item)
+	models.DB.Save(&item)
 
 	c.IndentedJSON(http.StatusOK, item)
 
@@ -92,7 +92,7 @@ func DeleteItem(c *gin.Context) {
 	// Get Item ID from the request
 	id := c.Param("id")
 	models.DB.First(&item, id)
-	// Check if item.Name, item.Description and item.Price is "" empty strigns
+	// Check if item.Name, item.Description and item.Price is "" empty strings
 	if item.Name == "" && item.Description == "" && item.Price == 0 && item.ID == 0 {
 		c.IndentedJSON(http.StatusNotFound, gin.H{
 			"message": "No item found",
@@ -100,7 +100,7 @@ func DeleteItem(c *gin.Context) {
 		return
 	}
 	// Item from db
-	db.Delete(&item, id)
+	models.DB.Delete(&item, id)
 
 	// return remaining items in db
 	models.DB.Find(&items)
