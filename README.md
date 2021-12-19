@@ -1,10 +1,10 @@
 # Golang-microservice-1
-A simple microservice app to show case usage :
-    * Golang
-    * Gin (Golang REST API libray)
-    * Docker 
-    * Postgresql
-    * Nginx
+A simple microservice app to show case usage 
+* Golang
+* Gin (Golang REST API libray)
+* Docker 
+* Postgresql
+* Nginx
 
 ## Golang
 Golang used the run time programming language because its compile time is fast.
@@ -14,8 +14,8 @@ Gin is the most common Golang REST API . It has been used because of its simplic
 
 ## Docker
 Writen in Golang, Docker has been used for containerization technology. Two images are created for this system :
-    * Golang Image
-    * React Image
+* Golang Image
+* React Image
 
 ## Postgresql
 Used to storing data entered by the users, Other data bases can be used as well. It easy to setup Postgresql with Golang
